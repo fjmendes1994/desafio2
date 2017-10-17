@@ -5,11 +5,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-    <p th:text="'Hello, ' + ${nome} + '!'" />
+    <p>As estações mais proximas são :</p>
 
-    <tr th:each="result : ${results}">
-        <td th:text="${result}"></td>
-    </tr>
+    <ul th:each="result : ${results}">
+
+         <li th:text="${result}"></li>
+    </ul>
 
 </body>
 </html>
