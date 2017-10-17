@@ -23,8 +23,10 @@ public class EstacaoController  {
 
 
     @RequestMapping("/estacao")
-    public String estacao(@RequestParam(value = "lati") double lati, @RequestParam(value = "longi") double longi) throws IOException{
-        
+    public String estacao(@RequestParam(value = "lati") double lati, @RequestParam(value = "longi") double longi, Model model) throws IOException{
+        String nome = "CU";
+        ArrayList<String> results = new ArrayList();
+        model.addAttribute("nome" , nome);
         
         // URI do API BikeRio
         final String uri = "http://dadosabertos.rio.rj.gov.br/apiTransporte/apresentacao/rest/index.cfm/estacoesBikeRio";
@@ -80,7 +82,7 @@ public class EstacaoController  {
         for(EstacaoDistancia estacaoDistancia : estacoesDistancia){
 
             System.out.println("Distancia da estacao " + estacaoDistancia.getEstacao() + " é de " + estacaoDistancia.getDistancia() + " Km");
-            
+            results.add("Distancia da estacao " + estacaoDistancia.getEstacao() + " é de " + estacaoDistancia.getDistancia() + " Km");
         }
 
         System.out.println("-----------------------");
@@ -91,6 +93,7 @@ public class EstacaoController  {
         System.out.println("-----------------------");
         System.out.println("-----------------------");
 
+        model.addAttribute("results" , results);
         
         return "estacao";
     }
