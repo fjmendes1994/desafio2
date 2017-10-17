@@ -24,8 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class EstacaoController  {
 
     @RequestMapping("/estacao")
-    public String estacao (@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) throws IOException{
-        model.addAttribute("name", name);
+    public String estacao (@RequestParam double lati, @RequestParam double longi) throws IOException{
+       
 
         // URI do API BikeRio
         final String uri = "http://dadosabertos.rio.rj.gov.br/apiTransporte/apresentacao/rest/index.cfm/estacoesBikeRio";
@@ -82,7 +82,13 @@ public class EstacaoController  {
 
             System.out.println("Distancia da estacao " + estacaoDistancia.getEstacao() + " é de " + estacaoDistancia.getDistancia());
         }
-
+ 
+        System.out.println("-----------------------");
+        System.out.println("-----------------------");
+        System.out.println(lati);
+        System.out.println(longi);
+        System.out.println("-----------------------");
+        System.out.println("-----------------------");
 
 
         
