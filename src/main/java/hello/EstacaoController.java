@@ -1,7 +1,5 @@
 package hello;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.client.RestTemplate;
@@ -9,8 +7,6 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
 import java.util.*;
@@ -20,13 +16,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
+
 @Controller
 public class EstacaoController  {
 
-    @RequestMapping("/estacao")
-    public String estacao (@RequestParam double lati, @RequestParam double longi) throws IOException{
-       
 
+    @RequestMapping("/estacao")
+    public String estacao(@RequestParam(value = "lati") double lati, @RequestParam(value = "longi") double longi) throws IOException{
+        
+        
         // URI do API BikeRio
         final String uri = "http://dadosabertos.rio.rj.gov.br/apiTransporte/apresentacao/rest/index.cfm/estacoesBikeRio";
         
@@ -46,13 +45,13 @@ public class EstacaoController  {
         // Aqui eu acesso o array dentro do arrayNode
         if (values.isArray()) {
             for (int i = 0; i < values.size(); i++) {
-               estacoes.add(new Estacao(values.get(i).get(0).toString(),
-                                                 values.get(i).get(1).toString(),
-                                                 values.get(i).get(2).toString(),
-                                                 values.get(i).get(3).toString(),
-                                                 values.get(i).get(4).toString(),
-                                                 values.get(i).get(5).toString(),
-                                                 values.get(i).get(6).toString() ));
+            estacoes.add(new Estacao(values.get(i).get(0).toString(),
+                                                values.get(i).get(1).toString(),
+                                                values.get(i).get(2).toString(),
+                                                values.get(i).get(3).toString(),
+                                                values.get(i).get(4).toString(),
+                                                values.get(i).get(5).toString(),
+                                                values.get(i).get(6).toString() ));
             
                 System.out.println( "Estacao : " + values.get(i).get(1) + " adicionada !");
 
@@ -65,7 +64,7 @@ public class EstacaoController  {
 
         for(Estacao estacao : estacoes){
             if(!estacao.getEstacao().contains("Rua da Passagem")){
-                estacoesDistancia.add(new EstacaoDistancia(estacao.getEstacao(), estacao.calcDistancia(-22.9012257, -43.224256)));
+                estacoesDistancia.add(new EstacaoDistancia(estacao.getEstacao(), estacao.calcDistancia(lati, longi)));
                 //System.out.println("Distancia da estacao " + estacao.getEstacao() + " é " + estacao.calcDistancia(-22.9012257, -43.224256));
                 
             }
@@ -80,19 +79,22 @@ public class EstacaoController  {
         });
         for(EstacaoDistancia estacaoDistancia : estacoesDistancia){
 
-            System.out.println("Distancia da estacao " + estacaoDistancia.getEstacao() + " é de " + estacaoDistancia.getDistancia());
+            System.out.println("Distancia da estacao " + estacaoDistancia.getEstacao() + " é de " + estacaoDistancia.getDistancia() + " Km");
+            
         }
- 
+
         System.out.println("-----------------------");
+        System.out.println("------ SEU LOCAL ------");
         System.out.println("-----------------------");
         System.out.println(lati);
         System.out.println(longi);
         System.out.println("-----------------------");
         System.out.println("-----------------------");
 
-
         
         return "estacao";
     }
+    
 
+    
 }
